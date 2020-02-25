@@ -1,0 +1,90 @@
+/**
+ * Theme Name:   Twenty Sixteen Child Speleo.se
+ * Template:     twentysixteen
+ * Description:  Anpassningar av Twenty Sixteen till speleo.se
+ * Author:       Tvartom
+ * Text Domain:  twentysixteenchild
+ */
+
+/* SFF-färger
+Gul: #ffec00
+Blå: #2a4090
+*/
+
+
+/* Gör så att vi kan anävnda Tobbes gamla header-bilder som inte är 1200x800 */
+.header-image img {
+	width: 100%;
+}
+
+/* ************************************ Sidfot ************************************ */
+/* Sidoft är enfärgad blå, med gul text */
+.site-footer {
+    color: #ffec00;
+    background-color: #2a4090;
+    /* Padding ovanför menyn som dyker upp på smala skärmar: */
+    padding-top: 1em;
+}
+
+/* Menyn som dyker upp i footern på smala skärmar, lägg den på vit bakgrund och lite inre marginaler: */
+.site-footer nav {
+    background-color: #ffffff;
+    padding: 1em;
+}
+
+/* Gör sträcket över widget gult, om det är i footern
+Ta sedan bort paddingen under, och sätt på .footercolumn istället.
+ */
+.site-footer .widget {
+    border-top-color: #ffec00;
+    padding-top: 0;
+}
+
+/* Kolumner i sidfoten som har wrap:
+*/
+.site-footer section {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+/* Var kolumn/box i sidfoten */
+.footercolumn {
+	padding-top: 1.75em;
+}
+
+/* Minska utrymmet under h2 i footer.kolumn/box:arna: */
+.site-footer .widget-title {
+    margin: 0 0 0.5em;
+}
+
+/* Storleken på ssf-logon i sidfoten, även sgk:s */
+.footer_logo {
+	width: 12em;
+	height: 12em;
+}
+
+/* **** © Sveriges Speleologförbund 2020 **** */
+
+/* site-info har angiven färg till grå, låt den ta gula istället. */
+.site-info {
+    color: inherit;
+    width: 100%
+}
+
+/* I orginaltemat står det / efter Sveriges Speleologförbund, ta bort! */
+.site-footer .site-title:after {
+    content: none;
+}
+
+/* site-info-länken får default länkfärg om vi inte sätter den, vi vill ha gul. */
+.site-info a {
+    color: #ffec00;
+}
+
+
+/* ***********'  STockholms Grottklubb ********* */
+.lokalklubb.sgk {
+	color: #ffff66;
+	background: #663333;
+}
