@@ -16,6 +16,35 @@ function speleo_se_theme_enqueue_styles() {
 
 
 
+# https://www.wpwhitesecurity.com/hide-wordpress-version-number/
+# REmove meta-generator-tag:
+remove_action('wp_head', 'wp_generator');
+# Remove from rss-feed:
+function remove_wp_version_rss() {
+ return'';
+ }
+ 
+add_filter('the_generator','remove_wp_version_rss');
+
+
+
+
+
+// Google Analytics for Speleo.se 
+//add_action( 'wp_head', 'my_google_analytics_script' );
+function my_google_analytics_script() {
+?> 
+  <!-- Global site tag (gtag.js) - Google Analytics --> 
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159069439-1"></script> 
+  <script> 
+    window.dataLayer = window.dataLayer || []; 
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date()); 
+   
+    gtag('config', 'UA-159069439-1'); 
+  </script> 
+  <?php
+}
 
 
 
