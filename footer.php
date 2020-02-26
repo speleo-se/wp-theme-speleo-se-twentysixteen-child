@@ -86,7 +86,9 @@
 				?>
 	<section class="widget_text widget widget_custom_html">
 		<div class="footercolumn">
-			<h2 class="widget-title">Betalning till SSF</h2><div class="textwidget custom-html-widget"><strong>Postgiro:</strong> 634208-3<br>
+			<h2 class="widget-title">Betalning till SSF</h2>
+			<div class="textwidget custom-html-widget">
+				<strong>Plusgiro:</strong> 634208-3<br>
 				<strong>Bankgiro:</strong> 5002-0494<br>
 				<br>
 				<strong>Swish:</strong><br>
