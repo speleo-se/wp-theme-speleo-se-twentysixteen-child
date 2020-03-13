@@ -1,8 +1,12 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 // Bootstrap för child-tema för ssf:
 // Källa: https://developer.wordpress.org/themes/advanced-topics/child-themes/
-add_action( 'wp_enqueue_scripts', 'speleo_se_theme_enqueue_styles' );
-function speleo_se_theme_enqueue_styles() {
+add_action( 'wp_enqueue_scripts', function() {
 
     $parent_style = 'parent-style'; // This is 'twentysixteen-style' for the Twenty Sixteen theme.
 
@@ -12,42 +16,82 @@ function speleo_se_theme_enqueue_styles() {
         array( $parent_style ),
         wp_get_theme()->get('Version')
     );
-}
+} );
 
 
 
 # https://www.wpwhitesecurity.com/hide-wordpress-version-number/
 # REmove meta-generator-tag:
 remove_action('wp_head', 'wp_generator');
-# Remove from rss-feed:
-function remove_wp_version_rss() {
- return'';
- }
- 
-add_filter('the_generator','remove_wp_version_rss');
-
+# Remove version from rss-feed:
+add_filter('the_generator', function() {
+	return '';
+} );
 
 
 
 
 // Google Analytics for Speleo.se 
-//add_action( 'wp_head', 'my_google_analytics_script' );
-function my_google_analytics_script() {
-?> 
+/*
+add_action( 'wp_head', function() {
+?>
   <!-- Global site tag (gtag.js) - Google Analytics --> 
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159069439-1"></script> 
   <script> 
     window.dataLayer = window.dataLayer || []; 
     function gtag(){dataLayer.push(arguments);} 
     gtag('js', new Date()); 
-   
+
     gtag('config', 'UA-159069439-1'); 
   </script> 
   <?php
-}
+} );
+*/
 
 
 
 
-// Möjliggör kategorier på sidor.
+/**
+ * Ny avatar för användare på Speleo.se (Måste ha en grottare)
+ *
+ * Inspired by: https://www.wpbeginner.com/wp-tutorials/how-to-change-the-default-gravatar-on-wordpress/
+ *
+ * Bild från: https://www.needpix.com/photo/469435/elen-feuerriegel-underground-astronaut-caver-expedition-sitting-homo-naledi-rising-star-exploration-paleoanthropology
+ * Föreställande Elen Feuerriegel
+ * https://en.wikipedia.org/wiki/Elen_Feuerriegel
+ * Konstnör okänd, men ska vara CC0.
+ *
+ * Ändra till denna på wp-admin -> Inställningar -> Diskussion
+ */
+add_filter( 'avatar_defaults', function($avatar_defaults) {
+  $myavatar = (($_SERVER[HTTPS] ?? 'off') == 'on' ? 'https' : 'http' ).'://'.$_SERVER['HTTP_HOST'].'/wp-content/themes/'.basename(__DIR__).'/assets/images/avatar-250x250.png';
+  $avatar_defaults[$myavatar] = "Speleo avatar";
+  return $avatar_defaults;
+} );
+
+
+
+/**
+ * Ta bort möjlighet för användare att välja färg på admin.
+ * Ger renare gränssnitt.
+ */
+#https://shellcreeper.com/how-to-remove-wp-admin-color-scheme-option/
+/* Admin hook */
+add_action( 'admin_init', function() {
+    global $_wp_admin_css_colors;
+
+    /* Remove everything else */
+    $_wp_admin_css_colors = array( 'fresh' => $_wp_admin_css_colors['fresh'] );
+}, 1 );
+
+
+/* Filter user color option */
+add_filter( 'get_user_option_admin_color', function( $color ){
+    return 'fresh';
+}, 1, 1 );
+
+
+
+
+// Möjliggör kategorier på sidor. (Behövs för olika sidfötter)
 include('functions-category-tag-pages.php');
