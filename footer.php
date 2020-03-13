@@ -10,8 +10,17 @@
 		</div><!-- .site-content -->
 
 <?php
-	// Stockholms Grottklubb
-	if (in_array('Stockholms Grottklubb', array_column(get_the_tags(), 'name'))) {
+$pageTagNames = array_column(get_the_tags() ?: [], 'name');
+$eventTagNames = array_column(get_the_terms( get_the_ID(), 'event-tag' ) ?: [], 'name');
+
+$subFooter = null;
+foreach (['Stockholms Grottklubb', 'Expedition Bjurälven'] as $sub) {
+	if (in_array($sub, $pageTagNames) || in_array($sub, $eventTagNames)) {
+		$subFooter = $sub;
+		break;
+	}
+}
+if ($subFooter == 'Stockholms Grottklubb') {
 ?>
 		<footer class="site-footer lokalklubb sgk">
 			<div class="site-info">
@@ -43,8 +52,24 @@
 				</section>
 			</div>
 		</footer>
-<?php } ?>
+<?php
+} else if ($subFooter == 'Expedition Bjurälven') {
+?>
+		<footer class="site-footer lokalklubb bjuralven">
+			<div class="site-info">
+				<section class="widget_text widget widget_custom_html">
+					<div class="footercolumn">
+						<img class="footer_logo" src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/expedition_bjuralven_logo.png">
+					</div>
+				</section>
+			</div>
+		</footer>
+<?php
+}
+/* ********* SSF ********* */
+?>
 		<footer id="colophon" class="site-footer" role="contentinfo">
+
 			<?php if ( has_nav_menu( 'primary' ) ) : ?>
 				<nav class="main-navigation" role="navigation" aria-label="<?php esc_attr_e( 'Footer Primary Menu', 'twentysixteen' ); ?>">
 					<?php
@@ -73,8 +98,9 @@
 					?>
 				</nav><!-- .social-navigation -->
 			<?php endif; ?>
-
-
+			<?php if ($subFooter) { ?>
+				<span class="site-title"><?php echo $subFooter; ?> är en del av:</span>
+			<?php } ?>
 			<div class="site-info">
 				<?php
 					/**
@@ -86,6 +112,21 @@
 				?>
 	<section class="widget_text widget widget_custom_html">
 		<div class="footercolumn">
+			<h2 class="widget-title">Sveriges Speleologförbund SSF</h2>
+			<div class="textwidget custom-html-widget">
+				<strong>Grundat:</strong> 1966<br>
+				<strong>Org.nr:</strong> 802010-4892<br>
+				<br>
+			</div>
+			<h2 class="widget-title">Forum</h2>
+			<div class="textwidget custom-html-widget">
+				<a href="https://www.facebook.com/groups/swedespeleo/" target="_blank">Sveriges Speleologförbund på Facebook</a>
+			</div>
+		</div>
+		<div class="footercolumn">
+			<img class="footer_logo" src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/ssf_logo_color_print.svg">
+		</div>
+		<div class="footercolumn">
 			<h2 class="widget-title">Betalning till SSF</h2>
 			<div class="textwidget custom-html-widget">
 				<strong>Plusgiro:</strong> 634208-3<br>
@@ -95,16 +136,6 @@
 				Medlemsavgifter: 123-6084065<br>
 				Nedåt: 123-5116629<br>
 				Årsmöte: 123-5787650<br>
-			</div>
-		</div>
-		<div class="footercolumn">
-			<img class="footer_logo" src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/ssf_logo_color_print.svg">
-		</div>
-		<div class="footercolumn">
-			<h2 class="widget-title">Sveriges Speleogförbund SSF</h2>
-			<div class="textwidget custom-html-widget">
-				<strong>Grundat:</strong> 1966<br>
-				<strong>Org.nr:</strong> 802010-4892<br>
 			</div>
 		</div>
 	</section>

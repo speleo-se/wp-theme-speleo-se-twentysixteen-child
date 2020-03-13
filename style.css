@@ -45,13 +45,20 @@ Ta sedan bort paddingen under, och sätt på .footercolumn istället.
 .site-footer section {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-around;
+	justify-content: space-between; /* -around */
 }
 
 /* Var kolumn/box i sidfoten */
 .footercolumn {
+	width: 24em;
 	padding-top: 1.75em;
 }
+
+.footercolumna:has(> .footer_logo) {
+	width: 12em;
+	padding-top: 1.75em;
+}
+
 
 /* Minska utrymmet under h2 i footer.kolumn/box:arna: */
 .site-footer .widget-title {
@@ -83,8 +90,22 @@ Ta sedan bort paddingen under, och sätt på .footercolumn istället.
 }
 
 
-/* ***********'  STockholms Grottklubb ********* */
+/* *********** Stockholms Grottklubb footer ********* */
 .lokalklubb.sgk {
 	color: #ffff66;
 	background: #663333;
+}
+.lokalklubb.bjuralven .widget {
+	border-top-color: #ffff66;
+}
+/* *********** Expedtion Bjurälven footer ********* */
+.lokalklubb.bjuralven {
+	color: #ffffff;
+	background: #000000;
+	background-image: url("/wp-content/themes/speleo-se-twentysixteen-child/assets/images/expedition_bjuralven_background.jpg");
+	background-position: right center;
+	background-size: cover;
+}
+.lokalklubb.bjuralven .widget {
+	border-top-color: #ffffff;
 }
