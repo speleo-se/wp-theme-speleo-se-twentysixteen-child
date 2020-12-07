@@ -90,8 +90,41 @@ add_filter( 'get_user_option_admin_color', function( $color ){
     return 'fresh';
 }, 1, 1 );
 
+/**
+ * Inloggningsutan på /wp-login.php
+ */
+
+// Logga över inloggningen
+add_action( 'login_enqueue_scripts', function () { ?>
+    <style type="text/css">
+        #login h1 a, .login h1 a {
+            background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/assets/images/ssf_logo_color_print.svg);
+        height:100px;
+        width:300px;
+        background-size: 300px 100px;
+        background-repeat: no-repeat;
+        padding-bottom: 10px;
+        }
+        
+    </style>
+<?php });
+// Istället för länk till WordPress när man trycker på loggan
+add_filter( 'login_headerurl', function ( $login_header_url ) {	return '/'; });
+// Istället för "Drivs av Wordpress" (Texten syns inte då den ersätts med loggan.)
+add_filter( 'login_headertext', function( $login_header_text ){	return 'Sveriges Speleologförbund'; });
+// Text som visas över inloggningsformuläret.
+add_filter( 'login_message', function ( $message ) { return 'Som medlem i Sveriges Speleologförbund är du välkommen att logga in. Som användnamn används ditt medlemsnummer. Du kan även logga in med din e-postadress.'; });
+// TODO!
+// Orginal: <a href="https://dev.speleo.se/wp-login.php?action=register">Registrera</a>
+add_filter( 'register', function ( $registration_url ) { return ''/*'<a href="/bli-melemsformulär...">TODO: Bli medlem</a>'*/; });
+
 
 
 
 // Möjliggör kategorier på sidor. (Behövs för olika sidfötter)
 include('functions-category-tag-pages.php');
+
+
+// Inkludera mailinställningar för speleo.se
+include('mailsettings.php');
+
