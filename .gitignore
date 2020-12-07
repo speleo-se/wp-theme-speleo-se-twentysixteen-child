@@ -1,3 +1,9 @@
-sync_to_server.sh
+# Eclipse
+.buildpath
+.settings
+.project
+
+
+sync_to_server*
 
 .#*
