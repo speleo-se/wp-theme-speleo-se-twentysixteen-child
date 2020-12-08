@@ -32,21 +32,23 @@ add_filter('the_generator', function() {
 
 
 // Google Analytics for Speleo.se 
-/*
-add_action( 'wp_head', function() {
-?>
-  <!-- Global site tag (gtag.js) - Google Analytics --> 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159069439-1"></script> 
-  <script> 
-    window.dataLayer = window.dataLayer || []; 
-    function gtag(){dataLayer.push(arguments);} 
-    gtag('js', new Date()); 
 
-    gtag('config', 'UA-159069439-1'); 
-  </script> 
-  <?php
+add_action( 'wp_head', function() {
+	if ( $_SERVER['HTTP_HOST'] == 'speleo.se' ) {
+		?>
+			<!-- Global site tag (gtag.js) - Google Analytics --> 
+			<script async src="https://www.googletagmanager.com/gtag/js?id=UA-159069439-1"></script> 
+			<script> 
+				window.dataLayer = window.dataLayer || []; 
+				function gtag(){dataLayer.push(arguments);} 
+				gtag('js', new Date()); 
+		
+				gtag('config', 'UA-159069439-1'); 
+			</script> 
+		<?php
+	}
 } );
-*/
+
 
 
 
@@ -118,8 +120,8 @@ add_filter( 'login_message', function ( $message ) { return 'Som medlem i Sverig
 // Orginal: <a href="https://dev.speleo.se/wp-login.php?action=register">Registrera</a>
 add_filter( 'register', function ( $registration_url ) { return ''/*'<a href="/bli-melemsformulär...">TODO: Bli medlem</a>'*/; });
 
-
-
+// Kan även använda '__return_false'
+add_filter( 'xmlrpc_enabled', function () { sleep(5); return false; } );
 
 // Möjliggör kategorier på sidor. (Behövs för olika sidfötter)
 include('functions-category-tag-pages.php');
