@@ -92,6 +92,19 @@ add_filter( 'get_user_option_admin_color', function( $color ){
     return 'fresh';
 }, 1, 1 );
 
+
+	
+add_filter('user_contactmethods',function ( $contactmethods ) {
+	//$contactmethods['facebook'] = 'Facebook';
+	//$contactmethods['twitter'] = 'Twitter';
+	unset($contactmethods['yim']);
+	unset($contactmethods['aim']);
+	unset($contactmethods['jabber']);
+	return $contactmethods;
+},10,1);
+
+
+
 /**
  * Inloggningsutan på /wp-login.php
  */
@@ -101,13 +114,37 @@ add_action( 'login_enqueue_scripts', function () { ?>
     <style type="text/css">
         #login h1 a, .login h1 a {
             background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/assets/images/ssf_logo_color_print.svg);
-        height:100px;
+        height:200px;
         width:300px;
-        background-size: 300px 100px;
+        background-size: 300px 200px;
         background-repeat: no-repeat;
         padding-bottom: 10px;
         }
+        body.login {
+			background-color: #2a4090;
+			color: #ffec00;
+        }
+        form#loginform {
+        	color: #2a4090/*#444*/;
+        }
+        body.login .button-primary {
+        	background-color: #2a4090;
+        	color: #ffec00;
+        }
+        body.login .button-primary:hover {
+        	background-color: #3f539b;
+        	color: #ffec00;
+        }
+        body.login a{
+        	color: #ffec00 !important;
+        }
         
+        #login_error {
+        	color: #2a4090/*#444*/;
+        }
+        #login_instructions {
+        	margin-bottom: 2em;
+        }
     </style>
 <?php });
 // Istället för länk till WordPress när man trycker på loggan
@@ -115,13 +152,23 @@ add_filter( 'login_headerurl', function ( $login_header_url ) {	return '/'; });
 // Istället för "Drivs av Wordpress" (Texten syns inte då den ersätts med loggan.)
 add_filter( 'login_headertext', function( $login_header_text ){	return 'Sveriges Speleologförbund'; });
 // Text som visas över inloggningsformuläret.
-add_filter( 'login_message', function ( $message ) { return 'Som medlem i Sveriges Speleologförbund är du välkommen att logga in. Som användnamn används ditt medlemsnummer. Du kan även logga in med din e-postadress.'; });
+add_filter( 'login_message', function ( $message ) { return '<p id="login_instructions">Som medlem i Sveriges Speleologförbund är du välkommen att logga in. Som användnamn används ditt medlemsnummer. Du kan även logga in med din e-postadress.</p>'; });
 // TODO!
 // Orginal: <a href="https://dev.speleo.se/wp-login.php?action=register">Registrera</a>
 add_filter( 'register', function ( $registration_url ) { return ''/*'<a href="/bli-melemsformulär...">TODO: Bli medlem</a>'*/; });
 
 // Kan även använda '__return_false'
 add_filter( 'xmlrpc_enabled', function () { sleep(5); return false; } );
+
+add_filter( 'login_redirect', function() {
+	// Kod från: http://docs.itthinx.com/document/groups/api/examples/
+	if (Groups_User_Group::read( get_current_user_id(), Groups_Group::read_by_name( 'Medlem' )->group_id)) {
+		return 	'/medlem/';
+	} elseif (Groups_User_Group::read( get_current_user_id(), Groups_Group::read_by_name( 'Varit medlem' )->group_id)) {
+		return '/fornya-ditt-medlemskap/';
+	}
+	return '/';
+});
 
 // Möjliggör kategorier på sidor. (Behövs för olika sidfötter)
 include('functions-category-tag-pages.php');
