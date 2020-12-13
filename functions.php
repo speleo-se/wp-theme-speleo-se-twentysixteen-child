@@ -29,10 +29,61 @@ add_filter('the_generator', function() {
 } );
 
 
+// Inaktivera application-passwords (Används ej) Kom med WP 5.6
+add_filter( 'wp_is_application_passwords_available' , '__return_false' );
+
+// Hindra ändringar av e-post på wordpress-sida:	
+// https://wordpress.stackexchange.com/a/238251/183776
+// Serversida:
+add_action( 'user_profile_update_errors', 
+	function ( $errors, $update, $user ) {
+		$old = get_user_by('id', $user->ID);
+		
+		if( $user->user_email != $old->user_email   && (!current_user_can('create_users')) ) {
+			$user->user_email = $old->user_email;
+		}
+	}, 10, 3 );
+
+// Klientsida:
+add_action('admin_init', function () {
+	global $pagenow;
+	
+	// apply only to user profile or user edit pages
+	if ($pagenow!=='profile.php' && $pagenow!=='user-edit.php') {
+		return;
+	}
+	
+	// do not change anything for the administrator
+	if (current_user_can('administrator')) {
+		return;
+	}
+	
+	add_action( 'admin_footer', function () {
+		?>
+	    <script>
+	        jQuery(document).ready( function($) {
+	            var fields_to_disable = ['email', 'first_name', 'last_name'];
+	            for(i=0; i<fields_to_disable.length; i++) {
+	            	$('#'+ fields_to_disable[i]).each(function( index ) {
+		            	var $this = $(this);
+	            		$this.prop( "disabled", true );
+	            		$this.after(
+	            			$('<input type="hidden">').attr('name', $this.attr('name')).val($this.val())
+	            			);
+	                });
+	            }
+	            $('#email-description').html('Om du vill ändra din e-post gör du det här: <a href="/civicrm/profile/edit/?gid=15&reset=1">Mina medlemsuppgifter</a>');
+	        });
+	    </script>
+	<?php
+	});
+});
+
+
+
 
 
 // Google Analytics for Speleo.se 
-
 add_action( 'wp_head', function() {
 	if ( $_SERVER['HTTP_HOST'] == 'speleo.se' ) {
 		?>
@@ -152,7 +203,7 @@ add_filter( 'login_headerurl', function ( $login_header_url ) {	return '/'; });
 // Istället för "Drivs av Wordpress" (Texten syns inte då den ersätts med loggan.)
 add_filter( 'login_headertext', function( $login_header_text ){	return 'Sveriges Speleologförbund'; });
 // Text som visas över inloggningsformuläret.
-add_filter( 'login_message', function ( $message ) { return '<p id="login_instructions">Som medlem i Sveriges Speleologförbund är du välkommen att logga in. Som användnamn används ditt medlemsnummer. Du kan även logga in med din e-postadress.</p>'; });
+add_filter( 'login_message', function ( $message ) { return '<p id="login_instructions">Som medlem i Sveriges Speleologförbund är du välkommen att logga in. Som användnamn används ditt medlemsnummer. Du kan även logga in med din e-postadress.</p><p><a href="/civicrm/contribute/transact/?reset=1&id=1">Klicka här för att bli medlem</a></p><br> '; });
 // TODO!
 // Orginal: <a href="https://dev.speleo.se/wp-login.php?action=register">Registrera</a>
 add_filter( 'register', function ( $registration_url ) { return ''/*'<a href="/bli-melemsformulär...">TODO: Bli medlem</a>'*/; });
