@@ -175,7 +175,7 @@ add_action( 'login_enqueue_scripts', function () { ?>
 			background-color: #2a4090;
 			color: #ffec00;
         }
-        form#loginform {
+        form#loginform, form#lostpasswordform, form#resetpassform, #login_error, #login .message {
         	color: #2a4090/*#444*/;
         }
         body.login .button-primary {
@@ -188,10 +188,6 @@ add_action( 'login_enqueue_scripts', function () { ?>
         }
         body.login a{
         	color: #ffec00 !important;
-        }
-        
-        #login_error {
-        	color: #2a4090/*#444*/;
         }
         #login_instructions {
         	margin-bottom: 2em;
@@ -211,13 +207,23 @@ add_filter( 'register', function ( $registration_url ) { return ''/*'<a href="/b
 // Kan även använda '__return_false'
 add_filter( 'xmlrpc_enabled', function () { sleep(5); return false; } );
 
-add_filter( 'login_redirect', function() {
+/**
+ * Filters the login redirect URL.
+ *
+ * @since 3.0.0
+ *
+ * @param string           $redirect_to           The redirect destination URL.
+ * @param string           $requested_redirect_to The requested redirect destination URL passed as a parameter.
+ * @param WP_User|WP_Error $user                  WP_User object if login was successful, WP_Error object otherwise.
+ */
+add_filter( 'login_redirect', function($redirect_to, $requested_redirect_to = null, $user = null) {
 	// Kod från: http://docs.itthinx.com/document/groups/api/examples/
 	if (Groups_User_Group::read( get_current_user_id(), Groups_Group::read_by_name( 'Medlem' )->group_id)) {
 		return 	'/medlem/';
 	} elseif (Groups_User_Group::read( get_current_user_id(), Groups_Group::read_by_name( 'Varit medlem' )->group_id)) {
 		return '/fornya-ditt-medlemskap/';
 	}
+	//die('WEBMASTER TEST: Ingen grupp');
 	return '/';
 });
 
