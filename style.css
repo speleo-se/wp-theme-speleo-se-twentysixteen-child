@@ -88,7 +88,27 @@ Ta sedan bort paddingen under, och sätt på .footercolumn istället.
 .site-info a {
     color: #ffec00;
 }
-
+.footer-key {
+	float: left;
+	clear: both;
+	margin-right: 1ch;
+}
+span.footer-key {
+	font-weight: bolder;
+}
+.footer-key-space {
+	margin-top: 1em;
+}
+.footer-value {
+	float: left;
+}
+summary {
+	display: revert;
+	cursor: pointer;
+}
+.numbergroup {
+	margin-right: 0.7ch;
+}
 
 /* *********** Stockholms Grottklubb footer ********* */
 .lokalklubb.sgk {

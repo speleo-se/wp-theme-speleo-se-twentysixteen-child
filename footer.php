@@ -129,13 +129,36 @@ if ($subFooter == 'Stockholms Grottklubb') {
 		<div class="footercolumn">
 			<h2 class="widget-title">Betalning till SSF</h2>
 			<div class="textwidget custom-html-widget">
-				<strong>Plusgiro:</strong> 634208-3<br>
-				<strong>Bankgiro:</strong> 5002-0494<br>
-				<br>
-				<strong>Swish:</strong><br>
-				Medlemsavgifter: 123-6084065<br>
-				Nedåt: 123-5116629<br>
-				Årsmöte: 123-5787650<br>
+				<span class="footer-key">Plusgiro:</span><span class="footer-value">634208-3</span>
+				<span class="footer-key">Bankgiro:</span><span class="footer-value">5002-0494</span>
+
+				<span class="footer-key footer-key-space">Swish:</span>
+				<span class="footer-value" style="clear: both;">
+					Medlemsavgifter: 123-6084065<br>
+					Nedåt: 123-5116629<br>
+					Årsmöte: 123-5787650
+				</span>
+				<span class="footer-key footer-key-space">Från utlandet:</span>
+				<details style="clear: both;">
+  				<summary style="line-height: 1em; padding-top:2px; margin-bottom: 0.5em;">
+						<span style="display: inline-block;"><span class="footer-key">IBAN:</span><span class="footer-value"><span class="numbergroup">SE25</span><span class="numbergroup">3000</span><span class="numbergroup">0000</span><span class="numbergroup">0183</span><span class="numbergroup">8170</span>1708</span></span>
+					</summary>
+					<span class="footer-key">SWIFT/BIC:</span><span class="footer-value">NDEASESS</span>
+					<span class="footer-key">Address:</span>
+					<span class="footer-value">
+						Sveriges Speleologförbund SSF<br>
+						BOX 16013<br>
+						SE-720 16 Västerås<br>
+						Sweden
+					</span>
+					<span class="footer-key">Address of bank:</span>
+					<span class="footer-value">
+						Nordea Bank AB<br>
+						Smålandsgatan 17<br>
+						SE-105 71 Stockholm<br>
+						Sweden
+					</span>
+				</details>
 			</div>
 		</div>
 	</section>
