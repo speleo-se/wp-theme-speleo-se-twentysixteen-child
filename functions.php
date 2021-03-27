@@ -217,20 +217,30 @@ add_filter( 'xmlrpc_enabled', function () { sleep(5); return false; } );
  * @param WP_User|WP_Error $user                  WP_User object if login was successful, WP_Error object otherwise.
  */
 add_filter( 'login_redirect', function($redirect_to, $requested_redirect_to = null, $user = null) {
-	// Kod från: http://docs.itthinx.com/document/groups/api/examples/
-	if (Groups_User_Group::read( get_current_user_id(), Groups_Group::read_by_name( 'Medlem' )->group_id)) {
-		return 	'/medlem/';
-	} elseif (Groups_User_Group::read( get_current_user_id(), Groups_Group::read_by_name( 'Varit medlem' )->group_id)) {
-		return '/fornya-ditt-medlemskap/';
+	// Denna anropas både vid laddning av login-sidan, misslyckad inloggning och lyckad inloggning.
+	// Om ej inloggad används retur värdet till att sätta det dolda fältet `redirect_to` i formuläret
+	// redirect_to och requested_redirect_to kan då sättas med GET-parametern ?redirect_to=/grottor-se-demo/
+	//
+	// https://speleo.se/ssf-login/?redirect_to=/inloggning-till-grottdatabasen/
+	// https://speleo.se/ssf-login/?redirect_to=/grottor-se-demo/
+	if ( $user && is_object( $user ) && is_a( $user, 'WP_User' ) ) {
+		// Kod från: http://docs.itthinx.com/document/groups/api/examples/
+		if (Groups_User_Group::read( $user->ID, Groups_Group::read_by_name( 'Medlem' )->group_id)) {
+			if ($requested_redirect_to && strpos($requested_redirect_to, 'wp-admin') === false) {
+				//if (in_array($requested_redirect_to,  ['/grottor-se-demo/','/inloggning-till-grottdatabasen/'])) {
+				return $requested_redirect_to;
+			}
+			return 	'/medlem/';
+		} elseif (Groups_User_Group::read( $user->ID, Groups_Group::read_by_name( 'Varit medlem' )->group_id)) {
+			return '/fornya-ditt-medlemskap/';
+		}
 	}
-	//die('WEBMASTER TEST: Ingen grupp');
-	return '/';
-});
+	// Ej inloggad eller misslyckad, låt vald redirect vara.
+	return $redirect_to;
+}, 10, 3);
 
 // Möjliggör kategorier på sidor. (Behövs för olika sidfötter)
 include('functions-category-tag-pages.php');
 
-
 // Inkludera mailinställningar för speleo.se
 include('mailsettings.php');
-
