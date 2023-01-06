@@ -130,12 +130,18 @@ add_filter( 'avatar_defaults', function($avatar_defaults) {
  */
 #https://shellcreeper.com/how-to-remove-wp-admin-color-scheme-option/
 /* Admin hook */
-add_action( 'admin_init', function() {
-    global $_wp_admin_css_colors;
+add_action( 'admin_head-profile.php', function() {
+    remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' );
+});
 
-    /* Remove everything else */
-    $_wp_admin_css_colors = array( 'fresh' => $_wp_admin_css_colors['fresh'] );
-}, 1 );
+
+// Old, pre wordpress 6
+//add_action( 'admin_init', function() {
+//    global $_wp_admin_css_colors;
+//
+//    /* Remove everything else */
+//    $_wp_admin_css_colors = array( 'fresh' => $_wp_admin_css_colors['fresh'] );
+//}, 1 );
 
 
 /* Filter user color option */
