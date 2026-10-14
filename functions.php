@@ -83,27 +83,6 @@ add_action('admin_init', function () {
 
 
 
-// Google Analytics for Speleo.se 
-add_action( 'wp_head', function() {
-	if ( $_SERVER['HTTP_HOST'] == 'speleo.se' ) {
-		?>
-			<!-- Global site tag (gtag.js) - Google Analytics --> 
-			<script async src="https://www.googletagmanager.com/gtag/js?id=UA-159069439-1"></script> 
-			<script> 
-				window.dataLayer = window.dataLayer || []; 
-				function gtag(){dataLayer.push(arguments);} 
-				gtag('js', new Date()); 
-		
-				gtag('config', 'UA-159069439-1'); 
-			</script> 
-		<?php
-	}
-} );
-
-
-
-
-
 /**
  * Ny avatar för användare på Speleo.se (Måste ha en grottare)
  *
